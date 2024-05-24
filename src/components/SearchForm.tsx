@@ -1,6 +1,11 @@
+import { useState } from "react";
+
 export default function SearchForm() {
+  const [searchText, setSearchText] = useState("");
+
+  console.log(searchText);
   return (
-    <form action="#" className="search">
+    <form onSubmit={(e) => e.preventDefault()} action="#" className="search">
       <button type="submit">
         <i className="fa-solid fa-magnifying-glass"></i>
       </button>
@@ -10,6 +15,8 @@ export default function SearchForm() {
         type="text"
         required
         placeholder="Find remote developer jobs..."
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
       />
     </form>
   );
