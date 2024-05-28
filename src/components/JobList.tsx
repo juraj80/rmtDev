@@ -10,7 +10,9 @@ export function JobList({ jobItems, isLoading }: JobListProps): JSX.Element {
       {isLoading && <Spinner />}
 
       {!isLoading &&
-        jobItems.map((jobItem) => <JobListItem jobItem={jobItem} />)}
+        jobItems.map((jobItem) => (
+          <JobListItem key={jobItem.id} jobItem={jobItem} />
+        ))}
     </ul>
   );
 }
