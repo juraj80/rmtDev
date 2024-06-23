@@ -15,7 +15,7 @@ import PaginationControls from "./PaginationControls";
 import { useDebounce, useJobItems } from "../lib/hooks";
 import { Toaster } from "react-hot-toast";
 import { RESULTS_PER_PAGE } from "../lib/constants";
-import { SortByType } from "../lib/types";
+import { PageDirection, SortByType } from "../lib/types";
 
 function App() {
   //state
@@ -44,7 +44,7 @@ function App() {
   );
 
   // event handlers / actions
-  const handleChangePage = (directon: "next" | "previous") => {
+  const handleChangePage = (directon: PageDirection) => {
     if (directon === "next") {
       setCurrentPage((prev) => prev + 1);
     } else {
