@@ -1,9 +1,12 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 
 export const BookmarksContext = createContext(null);
 
 export default function BookmarkContextProvider({ children }) {
-  const [bookmarkedIds, setBookmarkedIds] = useState<string[]>([]);
+  // setting initial state of bookmarkedIds with callback function
+  const [bookmarkedIds, setBookmarkedIds] = useState<string[]>(() =>
+    JSON.parse(localStorage.getItem("bookmarkedIds") || "[]")
+  );
 
   const handleBookmarkedIds = (id: string) => {
     if (bookmarkedIds.includes(id)) {
@@ -12,6 +15,10 @@ export default function BookmarkContextProvider({ children }) {
       setBookmarkedIds((prev) => [...prev, id]);
     }
   };
+
+  useEffect(() => {
+    localStorage.setItem("bookmarkedIds", JSON.stringify(bookmarkedIds));
+  }, [bookmarkedIds]);
 
   return (
     <BookmarksContext.Provider
