@@ -9,7 +9,14 @@ interface BookmarkIconPropsType {
 export default function BookmarkIcon({ id }: BookmarkIconPropsType) {
   const { bookmarkedIds, handleBookmarkedIds } = useContext(BookmarksContext);
   return (
-    <button onClick={() => handleBookmarkedIds(id)} className="bookmark-btn">
+    <button
+      onClick={(e) => {
+        handleBookmarkedIds(id);
+        e.stopPropagation;
+        e.preventDefault();
+      }}
+      className="bookmark-btn"
+    >
       <BookmarkFilledIcon
         className={`${bookmarkedIds.includes(id) ? "filled" : ""}`}
       />
