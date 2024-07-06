@@ -4,12 +4,12 @@ import { useLocalStorage } from "../lib/hooks";
 export const BookmarksContext = createContext(null);
 
 export default function BookmarkContextProvider({ children }) {
-  const [bookmarkedIds, setBookmarkedIds] = useLocalStorage(
+  const [bookmarkedIds, setBookmarkedIds] = useLocalStorage<number[]>(
     "bookmarkedIds",
     []
   );
 
-  const handleBookmarkedIds = (id: string) => {
+  const handleBookmarkedIds = (id: number) => {
     if (bookmarkedIds.includes(id)) {
       setBookmarkedIds((prev) => prev.filter((item) => item !== id));
     } else {

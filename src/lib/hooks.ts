@@ -98,7 +98,10 @@ export function useActiveId() {
   return activeId;
 }
 
-export function useLocalStorage(key: string, initialValue: any) {
+export function useLocalStorage<T>(
+  key: string,
+  initialValue: T
+): [T, React.Dispatch<React.SetStateAction<T>>] {
   // setting initial state of bookmarkedIds with callback function
   const [value, setValue] = useState(() =>
     JSON.parse(localStorage.getItem(key) || JSON.stringify(initialValue))

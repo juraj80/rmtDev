@@ -12,7 +12,7 @@ export default function BookmarkIcon({ id }: BookmarkIconPropsType) {
     <button
       onClick={(e) => {
         handleBookmarkedIds(id);
-        e.stopPropagation;
+        e.stopPropagation();
         e.preventDefault();
       }}
       className="bookmark-btn"
