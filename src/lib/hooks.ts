@@ -47,10 +47,11 @@ export function useJobItems(ids: number[]) {
       onError: handleErrors,
     })),
   });
-  console.log(result);
+
   const jobItems = result
     .map((result) => result.data?.jobItem)
-    .filter((jobItem) => jobItem !== undefined);
+    // .filter((jobItem) => jobItem !== undefined);
+    .filter((jobItem) => Boolean(jobItem)) as JobItemExpandedType[];
   const isLoading = result.some((result) => result.isLoading);
 
   return { jobItems, isLoading };
