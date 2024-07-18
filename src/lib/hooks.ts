@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { JobItemExpandedType, JobItemType } from "./types";
 import { BASE_API_URL } from "./constants";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { handleErrors } from "./utils";
 import { BookmarksContext } from "../contexts/BookmarkContextProvider";
 
@@ -35,6 +35,27 @@ export function useJobItem(id: number | null) {
   return { jobItem: data?.jobItem, isLoading: isInitialLoading } as const;
 }
 
+export function useJobItems(ids: number[]) {
+  const result = useQueries({
+    queries: ids.map((id) => ({
+      queryKey: ["job-item", id],
+      queryFn: () => fetchJobItem(id),
+      staleTime: 1000 * 60 * 60,
+      refetchOnWindowFocus: false,
+      retry: false,
+      enabled: Boolean(id),
+      onError: handleErrors,
+    })),
+  });
+  console.log(result);
+  const jobItems = result
+    .map((result) => result.data?.jobItem)
+    .filter((jobItem) => jobItem !== undefined);
+  const isLoading = result.some((result) => result.isLoading);
+
+  return { jobItems, isLoading };
+}
+
 type JobItemsApiResponse = {
   public: boolean;
   sorted: boolean;
@@ -54,7 +75,7 @@ const fetchJobItems = async (
   return data;
 };
 
-export function useJobItems(searchText: string) {
+export function useSearchQuery(searchText: string) {
   const { data, isInitialLoading } = useQuery(
     ["job-items", searchText],
     () => fetchJobItems(searchText),
@@ -119,7 +140,7 @@ export function useBookmarksContext() {
   const context = useContext(BookmarksContext);
   if (!context) {
     throw new Error(
-      "useContext(BookmarksContext) must be used within a BookmarksProvider"
+      "useBookmarksContext must be used within a BookmarksProvider"
     );
   }
 
