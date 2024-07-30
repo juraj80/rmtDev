@@ -6,7 +6,7 @@ const BookmarksPopover = forwardRef<HTMLDivElement>((_, ref) => {
   const { bookmarkedJobItems, isLoading } = useBookmarksContext();
 
   return (
-    <div className="bookmarks-popover">
+    <div ref={ref} className="bookmarks-popover">
       <JobList jobItems={bookmarkedJobItems} isLoading={isLoading} />
     </div>
   );
