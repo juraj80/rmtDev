@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext } from "react";
 import { useJobItems, useLocalStorage } from "../lib/hooks";
 import { JobItemExpandedType } from "../lib/types";
 

@@ -1,4 +1,4 @@
-import { useActiveId } from "../lib/hooks";
+import { useActiveIdContext } from "../lib/hooks";
 import { JobItemType } from "../lib/types";
 import JobListItem from "./JobListItem";
 import Spinner from "./Spinner";
@@ -6,7 +6,7 @@ import Spinner from "./Spinner";
 type JobListProps = { jobItems: JobItemType[]; isLoading: boolean };
 
 export function JobList({ jobItems, isLoading }: JobListProps): JSX.Element {
-  const activeId = useActiveId();
+  const { activeId } = useActiveIdContext();
 
   return (
     <ul className="job-list">
