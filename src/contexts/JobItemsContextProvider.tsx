@@ -1,4 +1,4 @@
-import { createContext, useMemo, useState } from "react";
+import { createContext, useCallback, useMemo, useState } from "react";
 import { RESULTS_PER_PAGE } from "../lib/constants";
 import { useSearchQuery, useSearchTextContext } from "../lib/hooks";
 import { SortByType, PageDirection, JobItemType } from "../lib/types";
@@ -58,34 +58,54 @@ export default function JobItemsContextProvider({
   );
 
   // event handlers / actions
-  const handleChangePage = (directon: PageDirection) => {
-    if (directon === "next") {
-      setCurrentPage((prev) => prev + 1);
-    } else {
-      setCurrentPage((prev) => prev - 1);
-    }
-  };
+  const handleChangePage = useCallback(
+    () => (directon: PageDirection) => {
+      if (directon === "next") {
+        setCurrentPage((prev) => prev + 1);
+      } else {
+        setCurrentPage((prev) => prev - 1);
+      }
+    },
+    []
+  );
 
-  const handleChangeSortBy = (newSortBy: SortByType) => {
-    setCurrentPage(1);
-    setSortBy(newSortBy);
-  };
+  const handleChangeSortBy = useCallback(
+    () => (newSortBy: SortByType) => {
+      setCurrentPage(1);
+      setSortBy(newSortBy);
+    },
+    []
+  );
+
+  const contextValue = useMemo(
+    () => ({
+      jobItems,
+      isLoading,
+      currentPage,
+      totalNumberOfResults,
+      totalNumberOfPages,
+      jobItemsSorted,
+      jobItemsSortedAndSliced,
+      sortBy,
+      handleChangePage,
+      handleChangeSortBy,
+    }),
+    [
+      jobItems,
+      isLoading,
+      currentPage,
+      totalNumberOfResults,
+      totalNumberOfPages,
+      jobItemsSorted,
+      jobItemsSortedAndSliced,
+      sortBy,
+      handleChangePage,
+      handleChangeSortBy,
+    ]
+  );
 
   return (
-    <JobItemsContext.Provider
-      value={{
-        jobItems,
-        isLoading,
-        currentPage,
-        totalNumberOfResults,
-        totalNumberOfPages,
-        jobItemsSorted,
-        jobItemsSortedAndSliced,
-        sortBy,
-        handleChangePage,
-        handleChangeSortBy,
-      }}
-    >
+    <JobItemsContext.Provider value={contextValue}>
       {children}
     </JobItemsContext.Provider>
   );
